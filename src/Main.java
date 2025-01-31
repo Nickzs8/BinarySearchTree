@@ -10,6 +10,7 @@ public class Main {
 		tree.insertNode(new Node(9));
 		tree.insertNode(new Node(0));
 		tree.insertNode(new Node(2));
+		tree.insertNode(new Node(10));
 		
 		tree.displayTree();
 	}
