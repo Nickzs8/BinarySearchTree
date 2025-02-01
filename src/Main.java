@@ -17,6 +17,9 @@ public class Main {
 	//	System.out.println(tree.minDepth);
 		//System.out.println(tree.maxDepth);
 		
+		tree.deleteTree();
+		
+		tree.displayTree();
 			
 	}
 
