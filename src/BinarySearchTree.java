@@ -3,45 +3,19 @@ import java.util.ArrayList;
 public class BinarySearchTree {
 	Node root;
 	int minDepth, maxDepth;
-	ArrayList<Integer> values = new ArrayList<Integer>();
+	ArrayList<Node> nodes = new ArrayList<Node>();
+	
 	
 	public void insertNode(Node node) {
 		root = insertNodeHelper(root, node, 0);
-		checkUnbalance();
+		if(!checkUnbalance()) balanceTree();
+		nodes.clear();
 	}
 	
-	public void checkUnbalance() {
-		
-		minDepth = -1;
-		maxDepth = 0;
-		checkUnbalanceHelper(root,0);
-		if(maxDepth - minDepth >= 2) balanceTree(root);
-		values.clear();
-				
-	}
-
-	private void checkUnbalanceHelper(Node root, int height) {
-		if(root == null && minDepth == -1) {
-			minDepth = height-1;
-			maxDepth = height-1;
-			return;
-		} else if(root == null) {
-			if(height - 1 < minDepth) minDepth = height-1;
-			else if(height - 1 > maxDepth) maxDepth = height-1;
-			return;
-		} else {
-			checkUnbalanceHelper(root.left, height + 1);
-			values.add(root.data);
-			checkUnbalanceHelper(root.right, height + 1);
-			
-		}
-		return;
+	private void insertBalancedNode(Node node) {
+		root = insertNodeHelper(root, node, 0);
 	}
 	
-	private void balanceTree(Node root) {
-		
-	}
-
 	private Node insertNodeHelper(Node root, Node node, int height) {
 		
 		int data  = node.data;
@@ -59,6 +33,55 @@ public class BinarySearchTree {
 		return root;
 	}
 	
+	public boolean checkUnbalance() {
+		
+		minDepth = -1;
+		maxDepth = 0;
+		checkUnbalanceHelper(root,0);
+		if(maxDepth - minDepth >= 2) return false;
+		nodes.clear();		
+		return true;
+		
+	}
+
+	private void checkUnbalanceHelper(Node root, int height) {
+		if(root == null && minDepth == -1) {
+			minDepth = height-1;
+			maxDepth = height-1;
+			return;
+		} else if(root == null) {
+			if(height - 1 < minDepth) minDepth = height-1;
+			else if(height - 1 > maxDepth) maxDepth = height-1;
+			return;
+		} else {
+			checkUnbalanceHelper(root.left, height + 1);
+			nodes.add(root);
+			checkUnbalanceHelper(root.right, height + 1);
+			
+		}
+		return;
+	}
+	
+	public void balanceTree() {
+		deleteTree();
+		balanceTreeHelper(0, nodes.size()-1);
+		nodes.clear();
+		
+	}
+	
+	private void balanceTreeHelper(int low, int high) {
+		if(low > high) return;
+		
+		int middle = low + (high-low)/2;
+		Node middleNode = nodes.get(middle);
+		insertBalancedNode(middleNode);
+		
+		balanceTreeHelper(low, middle-1);
+		balanceTreeHelper(middle+1, high);
+		
+		
+	}
+	
 	public void displayTree() {
 		displayTreeHelper(root);
 	}
@@ -66,9 +89,9 @@ public class BinarySearchTree {
 	private void displayTreeHelper(Node root) {
 		if(root == null) return;
 		
-		
+		System.out.println(root.data);
 		displayTreeHelper(root.left);
-		System.out.println(root.height);
+		
 		displayTreeHelper(root.right);
 		
 		return;

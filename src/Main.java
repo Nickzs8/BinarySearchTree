@@ -12,14 +12,8 @@ public class Main {
 		tree.insertNode(new Node(2));
 		tree.insertNode(new Node(10));
 		
-		//tree.displayTree();
-		
-	//	System.out.println(tree.minDepth);
-		//System.out.println(tree.maxDepth);
-		
-		tree.deleteTree();
-		
 		tree.displayTree();
+		
 			
 	}
 
