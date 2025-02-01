@@ -1,6 +1,6 @@
 
 public class Node {
-	int data;
+	int data,height;
 	Node left;
 	Node right;
 	

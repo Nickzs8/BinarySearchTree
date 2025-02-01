@@ -1,22 +1,57 @@
+import java.util.ArrayList;
 
 public class BinarySearchTree {
 	Node root;
-	
+	int minDepth, maxDepth;
+	ArrayList<Integer> values = new ArrayList<Integer>();
 	public void insertNode(Node node) {
-		root = insertHelper(root, node);
+		root = insertNodeHelper(root, node, 0);
+		checkUnbalance();
 	}
 	
-	private Node insertHelper(Node root, Node node) {
+	public void checkUnbalance() {
+		
+		minDepth = -1;
+		maxDepth = 0;
+		checkUnbalanceHelper(root,0);
+		if(maxDepth - minDepth >= 2) balanceTree(root);
+		values.clear();
+				
+	}
+	private void balanceTree(Node root) {
+		
+	}
+
+	private void checkUnbalanceHelper(Node root, int height) {
+		if(root == null && minDepth == -1) {
+			minDepth = height-1;
+			maxDepth = height-1;
+			return;
+		} else if(root == null) {
+			if(height - 1 < minDepth) minDepth = height-1;
+			else if(height - 1 > maxDepth) maxDepth = height-1;
+			return;
+		} else {
+			checkUnbalanceHelper(root.left, height + 1);
+			values.add(root.data);
+			checkUnbalanceHelper(root.right, height + 1);
+			
+		}
+		return;
+	}
+
+	private Node insertNodeHelper(Node root, Node node, int height) {
 		
 		int data  = node.data;
 		
 		if(root == null) {
 			root = node;
+			root.height = height;
 			return root;
 		} else if(data < root.data) {
-			root.left = insertHelper(root.left, node);
+			root.left = insertNodeHelper(root.left, node, height+1);
 		} else {
-			root.right = insertHelper(root.right, node);
+			root.right = insertNodeHelper(root.right, node, height+1);
 		}
 		
 		return root;
@@ -31,7 +66,7 @@ public class BinarySearchTree {
 		
 		
 		displayTreeHelper(root.left);
-		System.out.println(root.data);
+		System.out.println(root.height);
 		displayTreeHelper(root.right);
 		
 		return;
