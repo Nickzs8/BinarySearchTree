@@ -149,9 +149,11 @@ public class BinarySearchTree {
 		}
 		return root.data;
 	}
+	
 	public void deleteTree() {
 		root = deleteTreeHelper(root);
 	}
+	
 	private Node deleteTreeHelper(Node root) {
 		if(root == null) return null;
 		
